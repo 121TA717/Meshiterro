@@ -3,6 +3,7 @@ class PostImage < ApplicationRecord
   belongs_to :user
   
   
+  
   def get_image
     if image.attached?
       image
