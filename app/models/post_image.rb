@@ -1,9 +1,13 @@
 class PostImage < ApplicationRecord
-  has_one_attached :image
   belongs_to :user
+  has_one_attached :image
+  has_many :post_comments, dependent: :destroy
+  has_many :favorites, dependent: :destroy
   
   
-  
+  validates :shop_name, presence: true
+  validates :image, presence: true
+
   def get_image
     if image.attached?
       image
@@ -11,7 +15,7 @@ class PostImage < ApplicationRecord
       'no_image.jpg'
     end
   end
-  
+
   def get_image
     unless image.attached?
       file_path = Rails.root.join('app/assets/images/no_image.jpg')
@@ -20,4 +24,8 @@ class PostImage < ApplicationRecord
     image
   end
   
+  def favorited_by?(user)
+    favorites.exists?(user_id: user.id)
+  end
+
 end
